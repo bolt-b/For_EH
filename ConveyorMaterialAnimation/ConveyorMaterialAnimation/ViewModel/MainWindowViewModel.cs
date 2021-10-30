@@ -1,93 +1,56 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace ConveyorMaterialAnimation.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-
-      
-
-        // Мaterial animation enable
-        public bool Material_animation_enable
+        /// <summary>The raw material goes to the tape.</summary>
+        public bool IsMaterialsReceiving
         {
-            get { return _material_animation_enable; }
-            set { Set(ref _material_animation_enable, value); }
+            get => _isMaterialsReceiving;
+            private set => _ = Set(ref _isMaterialsReceiving, value);
         }
-        private bool _material_animation_enable;
+        private bool _isMaterialsReceiving;
 
 
-        // Set ellipse colour
-        public bool SetEllipseColour
+        /// <summary>The conveyor is running.</summary>
+        public bool IsConveyorRunning
         {
-            get { return _setellipsecolour; }
-            set { Set(ref _setellipsecolour, value); }
+            get => _isConveyorRunning;
+            private set => _ = Set(ref _isConveyorRunning, value);
         }
-        private bool _setellipsecolour;
+        private bool _isConveyorRunning;
 
 
         // Commands property definition
-        public ICommand Launch_animation_command { get; private set; }
-        public ICommand ConveyorStart_command { get; private set; }
+         /// <summary>Materials start/stop command. Inverts the <see cref="IsMaterialsReceiving"/> property.</summary>
+       public RelayCommand MaterialStartStopCommand { get; }
+        /// <summary>Conveyor start/stop command. Inverts the <see cref="IsConveyorRunning"/> property.</summary>
+        public RelayCommand ConveyorStartStopCommand { get; }
 
 
         public MainWindowViewModel()
         {
             // Command
-            Launch_animation_command = new RelayCommand(LaunchAnimation);
-            ConveyorStart_command = new RelayCommand(ConveyorStart);
-
+            MaterialStartStopCommand = new RelayCommand(MaterialStartStopExecute);
+            ConveyorStartStopCommand = new RelayCommand(ConveyorStartStopExecute);
         }
 
 
 
-        // Method
-        private void LaunchAnimation()
+        /// <summary>Execute Method for <see cref="MaterialStartStopCommand"/>.</summary>
+        private void MaterialStartStopExecute()
         {
-
-
-            if (!Material_animation_enable)
-            {
-
-                Material_animation_enable = true;
-
-            }
-
-            else if (Material_animation_enable)
-
-            {
-
-
-                Material_animation_enable = false;
-
-            }
-
-
-
+            IsMaterialsReceiving = !IsMaterialsReceiving;
         }
 
 
-        // Method
-        private void ConveyorStart()
+        /// <summary>Execute Method for <see cref="ConveyorStartStopCommand"/>.</summary>
+        private void ConveyorStartStopExecute()
         {
-            if (!SetEllipseColour)
-            {
-                SetEllipseColour = true;
-            
-            }
-
-            else if (SetEllipseColour)
-            {
-                SetEllipseColour = false;
-            }
-
-}
+            IsConveyorRunning = !IsConveyorRunning;
+        }
 
     }
 }

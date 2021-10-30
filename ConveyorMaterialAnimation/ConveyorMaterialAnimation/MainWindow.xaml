@@ -22,11 +22,11 @@
                 From="0"
                 To="790"
                 Duration="0:0:5" />
-            <DoubleAnimation
+            <!--<DoubleAnimation
                 Storyboard.TargetProperty="Y2"
                 From="0"
                 To="0"
-                Duration="0:0:5" />
+                Duration="0:0:5" />-->
         </Storyboard>
 
         <Storyboard x:Key="Storyboard.Erase2" x:Name="BeginStoryboardErase2">
@@ -35,11 +35,11 @@
                 From="0"
                 To="790"
                 Duration="0:0:5" />
-            <DoubleAnimation
+            <!--<DoubleAnimation
                 Storyboard.TargetProperty="Y1"
                 From="0"
                 To="0"
-                Duration="0:0:5" />
+                Duration="0:0:5" />-->
         </Storyboard>
     </Window.Resources>
 
@@ -67,7 +67,7 @@
                 <Line.Style>
                     <Style>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Material_animation_enable}" Value="true">
+                            <DataTrigger Binding="{Binding IsMaterialsReceiving}" Value="true">
                                 <DataTrigger.EnterActions>
                                     <!--<StopStoryboard BeginStoryboardName="BeginStoryboardErase2" />-->
                                     <BeginStoryboard x:Name="BeginStoryboardDraw2" Storyboard="{StaticResource Storyboard.Draw2}" />
@@ -118,7 +118,7 @@
                     <Style TargetType="Ellipse">
                         <Setter Property="Fill" Value="WhiteSmoke" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding SetEllipseColour}" Value="true">
+                            <DataTrigger Binding="{Binding IsConveyorRunning}" Value="true">
                                 <Setter Property="Fill" Value="LimeGreen" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -147,18 +147,40 @@
                 StrokeThickness="2" />
         </Canvas>
 
-        <Button
-            Width="120"
-            Height="30"
-            Command="{Binding Launch_animation_command}"
-            Content="Материал старт/стоп"
-            DockPanel.Dock="Left" />
-        <Button
-            Width="120"
-            Height="30"
-            Command="{Binding ConveyorStart_command}"
-            Content="Конвейер старт/стоп"
-            DockPanel.Dock="Right" />
+        <Button VerticalAlignment="Center" HorizontalAlignment="Center" 
+            Margin="10"
+            Padding="15 5"
+            Command="{Binding MaterialStartStopCommand, Mode=OneWay}"
+            DockPanel.Dock="Left">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Content" Value="Материал Cтарт"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsMaterialsReceiving}"
+                                     Value="True">
+                            <Setter Property="Content" Value="Материал Стоп"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button VerticalAlignment="Center" HorizontalAlignment="Center"
+                Padding="15 5"
+                Margin="10"
+                Command="{Binding ConveyorStartStopCommand, Mode=OneWay}"
+                DockPanel.Dock="Right">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Content" Value="Конвейер Cтарт"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsConveyorRunning}"
+                                     Value="True">
+                            <Setter Property="Content" Value="Конвейер Стоп"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
 
     </DockPanel>
 </Window>
