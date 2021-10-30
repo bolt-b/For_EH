@@ -14,7 +14,7 @@ namespace ConveyorMaterialAnimation.ViewModel
 
       
 
-        // Drum material animation enable
+        // Мaterial animation enable
         public bool Material_animation_enable
         {
             get { return _material_animation_enable; }
@@ -23,7 +23,7 @@ namespace ConveyorMaterialAnimation.ViewModel
         private bool _material_animation_enable;
 
 
-        // Set ellipce colour
+        // Set ellipse colour
         public bool SetEllipseColour
         {
             get { return _setellipsecolour; }
