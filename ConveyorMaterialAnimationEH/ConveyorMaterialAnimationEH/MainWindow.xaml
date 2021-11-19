@@ -1,0 +1,175 @@
+﻿<Window
+    x:Class="ConveyorMaterialAnimationEH.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ConveyorMaterialAnimationEH"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:ConveyorMaterialAnimationEH.ViewModel"
+    Title="MainWindow"
+    Width="1024"
+    Height="450"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:MainWindowViewModel ConveyorLength="800" Speed="50" />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate x:Key="Portion.Template" DataType="{x:Type vm:Portion}">
+            <Line
+                Stroke="Orange"
+                StrokeThickness="10"
+                X2="{Binding Length}" />
+        </DataTemplate>
+        <Style x:Key="Portion.Style" TargetType="ContentPresenter">
+            <Setter Property="Canvas.Left" Value="{Binding Begin}" />
+        </Style>
+        <ItemsPanelTemplate x:Key="Portions.Canvas">
+            <Canvas />
+        </ItemsPanelTemplate>
+    </Window.Resources>
+
+
+    <UniformGrid Columns="1">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ItemsControl
+                Width="{Binding ConveyorLength}"
+                Height="10"
+                ClipToBounds="True"
+                ItemContainerStyle="{DynamicResource Portion.Style}"
+                ItemTemplate="{DynamicResource Portion.Template}"
+                ItemsPanel="{DynamicResource Portions.Canvas}"
+                ItemsSource="{Binding Portions}" />
+            <Canvas
+                Width="905"
+                Height="106"
+                Margin="-5">
+
+              
+
+                <Ellipse Width="20" Height="20"
+                         Canvas.Right="0"
+                         Canvas.Top="-30">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Fill" Value="Red"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMaterialAtEnd}"
+                                             Value="True">
+                                    <Setter Property="Fill" Value="Green"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
+
+                <Ellipse
+                    Canvas.Left="0"
+                    Canvas.Top="0"
+                    Width="105"
+                    Height="105"
+                    Fill="WhiteSmoke"
+                    Stretch="Fill"
+                    Stroke="#FF000000"
+                    StrokeLineJoin="Round" />
+                <Ellipse
+                    Canvas.Left="800"
+                    Canvas.Top="0.499939"
+                    Width="105"
+                    Height="105"
+                    Stretch="Fill"
+                    Stroke="#FF000000"
+                    StrokeLineJoin="Round">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Fill" Value="WhiteSmoke" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsConveyorRunning}" Value="true">
+                                    <Setter Property="Fill" Value="LimeGreen" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
+                <Path
+                    Canvas.Left="51.5"
+                    Canvas.Top="0"
+                    Width="802"
+                    Height="2"
+                    Data="F1 M 52.5,1L 852.5,1"
+                    Stretch="Fill"
+                    Stroke="#FF000000"
+                    StrokeLineJoin="Round"
+                    StrokeThickness="2" />
+                <Path
+                    Canvas.Left="51.5"
+                    Canvas.Top="104"
+                    Width="802"
+                    Height="2"
+                    Data="F1 M 52.5,105L 852.5,105"
+                    Stretch="Fill"
+                    Stroke="#FF000000"
+                    StrokeLineJoin="Round"
+                    StrokeThickness="2" />
+
+               
+            </Canvas>
+            <Canvas>
+                <ItemsControl Canvas.Left="49" Canvas.Top="4"
+                Width="{Binding ConveyorLength}"
+                Height="10"
+                ClipToBounds="True"
+                ItemContainerStyle="{DynamicResource Portion.Style}"
+                ItemTemplate="{DynamicResource Portion.Template}"
+                ItemsPanel="{DynamicResource Portions.Canvas}"
+                ItemsSource="{Binding Portions}" />
+            </Canvas>
+
+        </StackPanel>
+        <UniformGrid Columns="2">
+            <ToggleButton
+                Margin="10"
+                Padding="15,5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Left"
+                IsChecked="{Binding IsMaterialsReceiving}">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Content" Value="Материал Cтарт" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMaterialsReceiving}" Value="True">
+                                <Setter Property="Content" Value="Материал Стоп" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+
+            <ToggleButton
+                Margin="10"
+                Padding="15,5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                IsChecked="{Binding IsConveyorRunning}">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Content" Value="Конвейер Cтарт" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsConveyorRunning}" Value="True">
+                                <Setter Property="Background" Value="Green"/>
+                                <Setter Property="Content" Value="Конвейер Стоп" />
+                              
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+
+        </UniformGrid>
+
+    </UniformGrid>
+
+</Window>
