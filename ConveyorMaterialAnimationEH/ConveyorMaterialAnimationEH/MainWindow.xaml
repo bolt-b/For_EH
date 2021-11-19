@@ -27,6 +27,33 @@
         <ItemsPanelTemplate x:Key="Portions.Canvas">
             <Canvas />
         </ItemsPanelTemplate>
+        <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Button.IsDefaulted" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="LightGreen"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="Green"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                    <Setter Property="Foreground" Value="#FF838383"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
     </Window.Resources>
 
 
@@ -45,7 +72,7 @@
                 Height="106"
                 Margin="-5">
 
-              
+
 
                 <Ellipse Width="20" Height="20"
                          Canvas.Right="0"
@@ -112,7 +139,7 @@
                     StrokeLineJoin="Round"
                     StrokeThickness="2" />
 
-               
+
             </Canvas>
             <Canvas>
                 <ItemsControl Canvas.Left="49" Canvas.Top="4"
@@ -132,7 +159,6 @@
                 Padding="15,5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                DockPanel.Dock="Left"
                 IsChecked="{Binding IsMaterialsReceiving}">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton">
@@ -146,28 +172,25 @@
                 </ToggleButton.Style>
             </ToggleButton>
 
-            <ToggleButton
+            <ToggleButton x:Name="toggleButton"
                 Margin="10"
                 Padding="15,5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding IsConveyorRunning}">
+                IsChecked="{Binding IsConveyorRunning}" Template="{DynamicResource ButtonBaseControlTemplate1}">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton">
                         <Setter Property="Background" Value="WhiteSmoke"/>
                         <Setter Property="Content" Value="Конвейер Cтарт" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsConveyorRunning}" Value="True">
-                                <Setter Property="Background" Value="Green"/>
+                            <Trigger Property="IsChecked" Value="True">
                                 <Setter Property="Content" Value="Конвейер Стоп" />
-                              
-                            </DataTrigger>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </ToggleButton.Style>
             </ToggleButton>
-
+            <TextBlock Text="{Binding IsPressed, ElementName=toggleButton, Mode=OneWay}"/>
         </UniformGrid>
 
     </UniformGrid>
