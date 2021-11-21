@@ -22,7 +22,16 @@ namespace ConveyorMaterialAnimationEH.ViewModel
         private double _speed;
         private double _conveyorLength;
         private bool _isMaterialAtEnd;
+        private bool _conveyor_On;
         #endregion
+
+
+        /// <summary> Conveyor On property.</summary>
+        public bool Conveyor_On
+        {
+            get => _conveyor_On;
+            set => _ = Set(ref _conveyor_On, value);
+        }
 
         /// <summary>The raw material goes to the tape.</summary>
         public bool IsMaterialsReceiving
@@ -53,7 +62,7 @@ namespace ConveyorMaterialAnimationEH.ViewModel
         private readonly Timer timer;
         private void OnTimer(object state)
         {
-            if (IsConveyorRunning)
+            if (Conveyor_On)
             {
                 lock (((ICollection)Portions).SyncRoot)
                 {
@@ -126,7 +135,7 @@ namespace ConveyorMaterialAnimationEH.ViewModel
                     }
                 }
             }
-            else if (propertyName == nameof(IsConveyorRunning))
+            else if (propertyName == nameof(Conveyor_On))
             {
                 if (Equals(newValue, true))
                 {

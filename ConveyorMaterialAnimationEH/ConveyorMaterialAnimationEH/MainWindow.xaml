@@ -27,6 +27,49 @@
         <ItemsPanelTemplate x:Key="Portions.Canvas">
             <Canvas />
         </ItemsPanelTemplate>
+
+        <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
+            <Border
+                x:Name="border"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                SnapsToDevicePixels="True">
+                <ContentPresenter
+                    x:Name="contentPresenter"
+                    Margin="{TemplateBinding Padding}"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Content="{TemplateBinding Content}"
+                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                    Focusable="False"
+                    RecognizesAccessKey="True"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Button.IsDefaulted" Value="True">
+                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="border" Property="Background" Value="#FFBEE6FD" />
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FF3C7FB1" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="border" Property="Background" Value="#FFC4E5F6" />
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FF2C628B" />
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter TargetName="border" Property="Background" Value="LimeGreen" />
+                    <Setter TargetName="border" Property="BorderBrush" Value="Green" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="border" Property="Background" Value="#FFF4F4F4" />
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FFADB2B5" />
+                    <Setter Property="Foreground" Value="#FF838383" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
     </Window.Resources>
 
 
@@ -46,17 +89,18 @@
                 Margin="-5">
 
 
-<!--Что-то изменили-->
-                <Ellipse Width="20" Height="20"
-                         Canvas.Right="0"
-                         Canvas.Top="-30">
+
+                <Ellipse
+                    Canvas.Top="-30"
+                    Canvas.Right="0"
+                    Width="20"
+                    Height="20">
                     <Ellipse.Style>
                         <Style TargetType="Ellipse">
-                            <Setter Property="Fill" Value="Red"/>
+                            <Setter Property="Fill" Value="Red" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMaterialAtEnd}"
-                                             Value="True">
-                                    <Setter Property="Fill" Value="Green"/>
+                                <DataTrigger Binding="{Binding IsMaterialAtEnd}" Value="True">
+                                    <Setter Property="Fill" Value="Green" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -111,18 +155,25 @@
                     Stroke="#FF000000"
                     StrokeLineJoin="Round"
                     StrokeThickness="2" />
+                <CheckBox
+                    Canvas.Left="808"
+                    Canvas.Top="42"
+                    Content="Датчик движ."
+                    IsChecked="{Binding IsConveyorRunning}" />
 
 
             </Canvas>
             <Canvas>
-                <ItemsControl Canvas.Left="49" Canvas.Top="4"
-                Width="{Binding ConveyorLength}"
-                Height="10"
-                ClipToBounds="True"
-                ItemContainerStyle="{DynamicResource Portion.Style}"
-                ItemTemplate="{DynamicResource Portion.Template}"
-                ItemsPanel="{DynamicResource Portions.Canvas}"
-                ItemsSource="{Binding Portions}" />
+                <ItemsControl
+                    Canvas.Left="49"
+                    Canvas.Top="4"
+                    Width="{Binding ConveyorLength}"
+                    Height="10"
+                    ClipToBounds="True"
+                    ItemContainerStyle="{DynamicResource Portion.Style}"
+                    ItemTemplate="{DynamicResource Portion.Template}"
+                    ItemsPanel="{DynamicResource Portions.Canvas}"
+                    ItemsSource="{Binding Portions}" />
             </Canvas>
 
         </StackPanel>
@@ -132,6 +183,7 @@
                 Padding="15,5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Left"
                 IsChecked="{Binding IsMaterialsReceiving}">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton">
@@ -145,30 +197,29 @@
                 </ToggleButton.Style>
             </ToggleButton>
 
-            <ToggleButton x:Name="toggleButton"
-                          Margin="10" Padding="0"
-                          BorderThickness="0"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding IsConveyorRunning}">
-                <TextBox IsReadOnly="True" 
-                         Padding="15,5"
-                         IsHitTestVisible="False">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Setter Property="Background" Value="WhiteSmoke"/>
-                            <Setter Property="Text" Value="Конвейер Cтарт" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsConveyorRunning}" Value="True">
-                                    <Setter Property="Text" Value="Конвейер Стоп" />
-                                    <Setter Property="Background" Value="LightGreen"/>
-                                    <Setter Property="BorderBrush" Value="Green"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
+            <ToggleButton
+                Margin="10"
+                Padding="15,5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                IsChecked="{Binding Conveyor_On}"
+                Template="{DynamicResource ButtonBaseControlTemplate1}">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Background" Value="WhiteSmoke" />
+                        <Setter Property="Content" Value="Конвейер Cтарт" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsConveyorRunning}" Value="True">
+                                <Setter Property="Background" Value="Green" />
+                                <Setter Property="Content" Value="Конвейер Стоп" />
+
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
             </ToggleButton>
+
         </UniformGrid>
 
     </UniformGrid>
