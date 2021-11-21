@@ -197,29 +197,30 @@
                 </ToggleButton.Style>
             </ToggleButton>
 
-            <ToggleButton
-                Margin="10"
-                Padding="15,5"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding Conveyor_On}"
-                Template="{DynamicResource ButtonBaseControlTemplate1}">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Background" Value="WhiteSmoke" />
-                        <Setter Property="Content" Value="Конвейер Cтарт" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsConveyorRunning}" Value="True">
-                                <Setter Property="Background" Value="Green" />
-                                <Setter Property="Content" Value="Конвейер Стоп" />
-
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ToggleButton.Style>
+            <ToggleButton x:Name="toggleButton"
+                          Margin="10" Padding="0"
+                          BorderThickness="0"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding Conveyor_On}">
+                <TextBox IsReadOnly="True" 
+                         Padding="15,5"
+                         IsHitTestVisible="False">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Background" Value="WhiteSmoke"/>
+                            <Setter Property="Text" Value="Конвейер Cтарт" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsConveyorRunning}" Value="True">
+                                    <Setter Property="Text" Value="Конвейер Стоп" />
+                                    <Setter Property="Background" Value="LightGreen"/>
+                                    <Setter Property="BorderBrush" Value="Green"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </ToggleButton>
-
         </UniformGrid>
 
     </UniformGrid>
