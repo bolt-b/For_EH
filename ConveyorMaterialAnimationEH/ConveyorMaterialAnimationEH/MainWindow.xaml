@@ -8,7 +8,7 @@
     xmlns:vm="clr-namespace:ConveyorMaterialAnimationEH.ViewModel"
     Title="MainWindow"
     Width="1024"
-    Height="450"
+    Height="650"
     mc:Ignorable="d">
     <Window.DataContext>
         <vm:MainWindowViewModel ConveyorLength="800" Speed="50" />
@@ -28,45 +28,28 @@
             <Canvas />
         </ItemsPanelTemplate>
 
-        <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
-            <Border
+        <ControlTemplate x:Key="SwitchButton.Vertical" TargetType="{x:Type ButtonBase}">
+            <Viewbox>
+                <Border Height="170" Width="70"
+                    CornerRadius="35"
                 x:Name="border"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 SnapsToDevicePixels="True">
-                <ContentPresenter
-                    x:Name="contentPresenter"
-                    Margin="{TemplateBinding Padding}"
-                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                    Content="{TemplateBinding Content}"
-                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                    Focusable="False"
-                    RecognizesAccessKey="True"
-                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-            </Border>
+                    <Grid x:Name="PART_Grid" Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="{Binding ActualWidth, ElementName=PART_Grid}"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="{Binding ActualWidth, ElementName=PART_Grid}"/>
+                        </Grid.RowDefinitions>
+                        <Ellipse x:Name="PART_Circle" Grid.Row="2" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                    </Grid>
+                </Border>
+            </Viewbox>
             <ControlTemplate.Triggers>
-                <Trigger Property="Button.IsDefaulted" Value="True">
-                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="border" Property="Background" Value="#FFBEE6FD" />
-                    <Setter TargetName="border" Property="BorderBrush" Value="#FF3C7FB1" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter TargetName="border" Property="Background" Value="#FFC4E5F6" />
-                    <Setter TargetName="border" Property="BorderBrush" Value="#FF2C628B" />
-                </Trigger>
                 <Trigger Property="ToggleButton.IsChecked" Value="True">
-                    <Setter TargetName="border" Property="Background" Value="LimeGreen" />
-                    <Setter TargetName="border" Property="BorderBrush" Value="Green" />
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter TargetName="border" Property="Background" Value="#FFF4F4F4" />
-                    <Setter TargetName="border" Property="BorderBrush" Value="#FFADB2B5" />
-                    <Setter Property="Foreground" Value="#FF838383" />
+                    <Setter TargetName="PART_Circle" Property="Grid.Row" Value="0" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -197,7 +180,31 @@
                 </ToggleButton.Style>
             </ToggleButton>
 
+
             <ToggleButton x:Name="toggleButton"
+                          Height="100"
+                          Margin="10" Padding="0"
+                          BorderThickness="5"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Template="{DynamicResource SwitchButton.Vertical}"
+                          Command="{Binding OnOffConveyorCommand, Mode=OneWay}"
+                          CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Content" Value="Материал Cтарт" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsConveyorRunning}" Value="True">
+                                <Setter Property="Background" Value="LightGreen"/>
+                                <Setter Property="BorderBrush" Value="Green"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+
+
+            <!--<ToggleButton x:Name="toggleButton"
                           Margin="10" Padding="0"
                           BorderThickness="0"
                           HorizontalAlignment="Center"
@@ -220,7 +227,7 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-            </ToggleButton>
+            </ToggleButton>-->
         </UniformGrid>
 
     </UniformGrid>

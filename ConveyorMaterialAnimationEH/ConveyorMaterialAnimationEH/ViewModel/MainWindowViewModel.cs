@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace ConveyorMaterialAnimationEH.ViewModel
@@ -23,6 +25,7 @@ namespace ConveyorMaterialAnimationEH.ViewModel
         private double _conveyorLength;
         private bool _isMaterialAtEnd;
         private bool _conveyor_On;
+        private RelayCommand<bool> _onOffConveyorCommand;
         #endregion
 
 
@@ -158,7 +161,16 @@ namespace ConveyorMaterialAnimationEH.ViewModel
             }
         }
 
+        public RelayCommand<bool> OnOffConveyorCommand => _onOffConveyorCommand
+            ?? (_onOffConveyorCommand = new RelayCommand<bool>(OnOffConveyorExecute));
 
+        /// <summary>Метод включения-выключения конвейера.</summary>
+        /// <param name="obj"></param>
+        private void OnOffConveyorExecute(bool isTurnOn)
+        {
+            MessageBox.Show($"Команда \"{(isTurnOn? "Включить":"Выключить")} ковейер\".");
+            IsConveyorRunning = isTurnOn;
+        }
     }
 
 
