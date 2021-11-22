@@ -189,15 +189,16 @@
                           VerticalAlignment="Center"
                           Template="{DynamicResource SwitchButton.Vertical}"
                           Command="{Binding OnOffConveyorCommand, Mode=OneWay}"
-                          CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}">
+                          CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                          IsChecked="{Binding IsConveyorRunning, Mode=OneWay}">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton">
                         <Setter Property="Content" Value="Материал Cтарт" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsConveyorRunning}" Value="True">
+                            <Trigger Property="IsChecked" Value="True">
                                 <Setter Property="Background" Value="LightGreen"/>
                                 <Setter Property="BorderBrush" Value="Green"/>
-                            </DataTrigger>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </ToggleButton.Style>
